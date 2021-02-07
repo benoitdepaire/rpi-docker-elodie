@@ -4,9 +4,9 @@
 # would live on your host and execute elodie in a docker container.
 
 # directory config
-CONFIG_DIR="${PWD}/config"
-INPUT_DIR="${PWD}/input"
-OUTPUT_DIR="${PWD}/output"
+CONFIG_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/config/Elodie"
+INPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos/import"
+OUTPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos/staged"
 
 # Change puid/guid values if you don't want them set to the running user
 PUID=$(id -u)
@@ -14,11 +14,11 @@ PGID=$(id -g)
 
 # Docker config
 CONTAINER_NAME=elodie
-IMAGE_NAME=furiousgeorge/elodie
+IMAGE_NAME=benoitdepaire/rpidockerelodie
 VERSION=latest
 
 # Exit if container is already running
-status=$(docker inspect -f "{{.State.Status}}" "$CONTAINER_NAME" 2>/dev/null)
+status=$(sudo docker inspect -f "{{.State.Status}}" "$CONTAINER_NAME" 2>/dev/null)
 if [ "$status" == "running" ]; then
     echo "Container $CONTAINER_NAME is already running"
     exit
@@ -38,7 +38,7 @@ if [ ! -d "$OUTPUT_DIR" ]; then
     exit
 fi
 
-docker run \
+sudo docker run \
     -it \
     --rm \
     --name="${CONTAINER_NAME}" \

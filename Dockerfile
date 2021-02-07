@@ -42,10 +42,10 @@ RUN \
     /root/.cache \
     /tmp/*
 
-#ENV ELODIE_APPLICATION_DIRECTORY="/config"
+ENV ELODIE_APPLICATION_DIRECTORY="/config"
 
-#ADD entrypoint.sh /entrypoint.sh
+ADD entrypoint.sh /entrypoint.sh
 
-#ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT ["/bin/bash"]
-#CMD [ "--help" ]
+ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/bin/bash"]
+#CMD [ "/bin/bash" ]

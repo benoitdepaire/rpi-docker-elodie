@@ -87,3 +87,5 @@ git clone https://github.com/furiousgeorgecontainers/docker-elodie.git
 cd elodie
 docker build -t furiousgeorge/elodie .
 ```
+## Some issues and how to resolve them
+- https://serverfault.com/questions/1037146/docker-container-with-random-date
