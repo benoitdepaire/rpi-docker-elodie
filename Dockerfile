@@ -4,7 +4,7 @@ FROM alpine:3.13
 #ARG BUILD_DATE
 #ARG VERSION
 #LABEL build_date="${BUILD_DATE}"
-LABEL version="0.1.0"
+LABEL version="0.2.0"
 
 RUN \
  echo "**** Install build packages ****" && \
