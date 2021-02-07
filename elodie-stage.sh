@@ -51,5 +51,5 @@ sudo docker run \
     -v "$OUTPUT_DIR":'/output' \
     -e 'PUID'="${PUID}" \
     -e 'PGID'="${PGID}" \
-    "${IMAGE_NAME}:${VERSION}" "import --source='/input' --destination='/output' --trash --debug"
+    "${IMAGE_NAME}:${VERSION}" "import" "--source=/input" "--destination=output" "--trash" "--debug"
 
