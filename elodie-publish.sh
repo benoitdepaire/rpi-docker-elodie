@@ -15,7 +15,7 @@ PGID=$(id -g)
 # Docker config
 CONTAINER_NAME=elodie
 IMAGE_NAME=benoitdepaire/rpidockerelodie
-VERSION=latest
+VERSION=arm
 
 # Exit if container is already running
 status=$(sudo docker inspect -f "{{.State.Status}}" "$CONTAINER_NAME" 2>/dev/null)
@@ -37,7 +37,7 @@ if [ ! -d "$OUTPUT_DIR" ]; then
     echo "Output Directory $OUTPUT_DIR does not exist - exiting"
     exit
 fi
-if [ -d "${INPUT_DIR}/.Trash-1000"]; then
+if [ -d "${INPUT_DIR}/.Trash-1000" ]; then
     echo "Directory $INPUT_DIR contains Trash folder. Remove first"
     exit
 fi

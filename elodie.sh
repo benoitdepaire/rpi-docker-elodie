@@ -15,7 +15,7 @@ PGID=$(id -g)
 # Docker config
 CONTAINER_NAME=elodie
 IMAGE_NAME=benoitdepaire/rpidockerelodie
-VERSION=latest
+VERSION=arm
 
 # Exit if container is already running
 status=$(sudo docker inspect -f "{{.State.Status}}" "$CONTAINER_NAME" 2>/dev/null)
