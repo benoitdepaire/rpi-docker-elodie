@@ -47,5 +47,5 @@ ENV ELODIE_APPLICATION_DIRECTORY="/config"
 ADD entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-#ENTRYPOINT ["/bin/bash"]
-#CMD [ "/bin/bash" ]
+#ENTRYPOINT ["/bin/bash"] 
+CMD [ "--help" ]
