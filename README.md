@@ -1,14 +1,15 @@
 # elodie-docker
-
-![Build Status](https://github.com/furiousgeorgecontainers/docker-elodie/workflows/CI/badge.svg)
-
 ## Description
 
-An implementation of [elodie](https://github.com/jmathai/elodie) in a docker container.
+An implementation of [elodie](https://github.com/jmathai/elodie) in a docker container, forked from the repository https://github.com/furiousgeorgecontainers/docker-elodie.
 
-This container is meant to be run at the command-line - there is no need/benefit to run it detatched (in the unRAID docker tab, for example).
+This container is meant to be run at the command-line. You can run elodie-stage.sh to move the files from ```/input``` folder to the ```/staged``` folder and ```elodie-publish.sh``` to move the files from the ```/staged``` folder to the ```/published``` folder.
 
-The Elodie repository does have the start of a docker container but I could not get it to work.  I created this container to use elodie in my own environment.  If the Elodie repository releases an official docker image I may retire this repository.
+The idea behind this two step approach is as follows:
+- First we move a small set from the ```/import``` to the ```/staged``` folder to inspect the available EXIF information. If dates are missing or incorrect, we will easily detect this from the structure of the ```/staged``` folder. If so, we can correct the EXIF data using the ```update``` option of Elodie.
+- Once the EXIF data is correct, we move the data from ```/staged``` to ```/published```. If the pictures already exist, they are skipped.
+
+The folder structure used for both the ```/staged``` and ```/published``` folder is: ```/Year/Month```
 
 ## Directories
 
@@ -18,74 +19,21 @@ This docker container makes use of 3 directories:
 * ```/input```  - The location of your incoming images
 * ```/output``` - The location Elodie will place processed images
 
-These directories can be mounted to the corresponding directories on your host.  The sample wrapper script (see the next section for information) will map these directories for you.
-
-**Note**: It could be ideal to mount the input directory as read only to prevent elodie from modifying input files, however, at the current time, elodie will fail if it is unable to write to the input directory.  If elodie is changed in the future to not require 
-
-## Wrapper script
-
-A sample wrapper script is also provided to assist you in running elodie in the docker container.  As long as you have docker running on your system, you should not need to install anything else - simply download the wrapper script (or create something like it) and it will pull the elodie-docker container for you if it does not exist and run the container.
-
-The wrapper script is located [here](https://github.com/furiousgeorgecontainers/elodie-docker/raw/master/elodie.sh)
-
-There is no need to clone this repository - all of the files (except the wrapper script) are only used to build the docker image - they are not needed to run the container.
-
-### Getting the Wrapper Script
-
-**NOTE: YOU SHOULD NOT BLINDLY DOWNLOAD A SCRIPT AND EXECUTE IT ON YOUR SYSTEM.  PLEASE VERIFY THE SCRIPT IS NOT DOING ANYTHING EVIL BEFORE FOLLOWING THESE INSTRUCTIONS.**  
-
-The safer way would be to write your own wrapper script, but if you have inspected the script and wish to use it, do something like this:
-
-```
-wget -O elodie.sh https://github.com/furiousgeorgecontainers/elodie-docker/raw/master/elodie.sh
-chmod +x ./elodie.sh
-```
-
-If you do not have wget and would like to use curl:
-
-```
-curl -L -o elodie.sh https://github.com/furiousgeorgecontainers/elodie-docker/raw/master/elodie.sh
-chmod +x ./elodie.sh
-```
-
-### Wrapper Script Configuration
-
-Configure the variables at the top of the script before running to set the locations of your directories (config, input, output).
+These directories should be mounted to the corresponding directories on your host.  This is done by the scripts ```elodie-stage.sh``` and ```elodie-publish.sh```. A sample config file (```config.ini```) is also provided and should be copied to the ```config``` folder.
 
 ### Wrapper Script Execution
 
-To run elodie in the docker container, just run the wrapper script and give it the arguments to pass to elodie in the container.
-
-### Example wrapper script run
-
-It is important to remember that the /input and /output directories in the container will be mapped to different directories on your host.  The arguments you give elodie in the running container should have the directories relative to the container: /input and /output.  You should not give the path to the directories on your host as arguments to this wrapper script.  If you want to change which directories the container is mapped to, see the Wrapper Script section above.
-
-For full documentation on elodie's usage, see the [Usage section](https://github.com/jmathai/elodie#usage-instructions) in the Elodie repository.
-
-Below are some quick examples of how to run the wrapper script to execute elodie in the docker container.
+To run elodie in the docker container, just run the wrapper script and give it the arguments to pass to elodie in the container. You could make a simlink of the scripts to ```/usr/bin```. (```ln -s $PWD/elodie-stage.sh /usr/bin/elodie-stage```)
 
 ##### Usage
 
-*Running the wrapper script without arguments will cause elodie in the docker container to display its help screen.*
+- create a separate config folder for both the stage and publish version on the host (```.../configs/Elodie/stage``` and ```.../configs/Elodie/stage```) and copy the ```config.ini``` file in this folder. Change the location of these folders appropriately at the top of the wrapper script.
+- create an ```import```, ```staged``` and ```published``` folder on your host and map these to the ```/input``` and ```/output``` folders of the Docker container appropriately in the wrapper scripts
+- Put the pictures you want to add in the ```import``` folder. Run ```elodie-stage```. Verify the structure in the ```staged``` folder. If necessary update the EXIF information.
+- Run ```elodie-publish```. 
+- Remove the .Trash-1000 folder and other remaining folders from the ```import``` and ```staged``` folders.
 
-```
-./elodie.sh
-```
+For full documentation on elodie's usage, see the [Usage section](https://github.com/jmathai/elodie#usage-instructions) in the Elodie repository.
 
-##### Import
-
-```
-./elodie.sh import --debug --source=/input --destination=/output
-```
-
-## Development
-
-If you would like to build the docker image yourself, run the following commands:
-
-```
-git clone https://github.com/furiousgeorgecontainers/docker-elodie.git
-cd elodie
-docker build -t furiousgeorge/elodie .
-```
 ## Some issues and how to resolve them
-- https://serverfault.com/questions/1037146/docker-container-with-random-date
+- If you have trouble running this docker and the date in the container seems to be completely off: https://serverfault.com/questions/1037146/docker-container-with-random-date
