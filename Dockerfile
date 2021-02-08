@@ -48,4 +48,4 @@ ADD entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 #ENTRYPOINT ["/bin/bash"] 
-CMD [ "import", "--source=/input", "--destination=output", "--trash", "--debug" ]
+CMD [ "--help" ]
