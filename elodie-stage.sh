@@ -5,8 +5,8 @@
 
 # directory config
 CONFIG_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/config/Elodie/stage"
-INPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos/import"
-OUTPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos/staged"
+INPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos_import"
+OUTPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos_staged"
 
 # Change puid/guid values if you don't want them set to the running user
 PUID=$(id -u)

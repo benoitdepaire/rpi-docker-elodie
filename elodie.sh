@@ -4,9 +4,9 @@
 # would live on your host and execute elodie in a docker container.
 
 # directory config
-CONFIG_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/config/Elodie/publish"
-INPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos_staged"
-OUTPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos_and_Videos"
+CONFIG_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/config/Elodie/stage"
+INPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos/import"
+OUTPUT_DIR="/srv/dev-disk-by-uuid-2cd1750d-f2a8-4717-abc8-77fe2da9eaf3/home/Photos/staged"
 
 # Change puid/guid values if you don't want them set to the running user
 PUID=$(id -u)
@@ -51,4 +51,5 @@ sudo docker run \
     -v "$OUTPUT_DIR":'/output' \
     -e 'PUID'="${PUID}" \
     -e 'PGID'="${PGID}" \
-    "${IMAGE_NAME}:${VERSION}" "import" "--source=/input" "--destination=output" "--trash" "--debug"
+    "${IMAGE_NAME}:${VERSION}" "$@"
+
